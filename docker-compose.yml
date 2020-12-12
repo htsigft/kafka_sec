@@ -42,11 +42,11 @@ services:
       CONFLUENT_METRICS_ENABLE: 'true'
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
       ALLOW_PLAINTEXT_LISTENER: 'no'
-      KAFKA_SSL_KEYSTORE_FILENAME: '/ssl/kafka.server.keystore.jks'
-      KAFKA_SSL_KEY_CREDENTIALS: '/ssl/broker_ssl_creds'
-      KAFKA_SSL_KEYSTORE_CREDENTIALS: '/ssl/broker_keystore_creds'
-      KAFKA_SSL_TRUSTSTORE_FILENAME: '/ssl/kafka.server.truststore.jks'
-      KAFKA_SSL_TRUSTORE_CREDENTIALS: '/ssl/broker_trustore_creds'
+      KAFKA_SSL_KEYSTORE_FILENAME: 'ssl/kafka.server.keystore.jks'
+      KAFKA_SSL_KEY_CREDENTIALS: 'ssl/broker_ssl_creds'
+      KAFKA_SSL_KEYSTORE_CREDENTIALS: 'ssl/broker_keystore_creds'
+      KAFKA_SSL_TRUSTSTORE_FILENAME: 'ssl/kafka.server.truststore.jks'
+      KAFKA_SSL_TRUSTSTORE_CREDENTIALS: 'ssl/broker_truststore_creds'
     volumes:
       - kafka_data:/etc/kafka/secrets
   schema-registry:
@@ -161,10 +161,10 @@ services:
       - schema-registry
       - connect
     command: "bash -c 'echo Waiting for Kafka to be ready... && \
-                       cub kafka-ready -b broker:29092 1 40 && \
+                       cub kafka-ready -b broker:29092 1 $BROKER_TIMEOUT_SECS && \
                        echo Waiting for Confluent Schema Registry to be ready... && \
                        A
-                       cub sr-ready schema-registry 8081 40 && \
+                       cub sr-ready schema-registry 8081 $SCHEMA_REGISTRY_TIMEOUT_SECS && \
                        echo Waiting a few seconds for topic creation to finish... && \
                        sleep 111 && \
                        tail -f /dev/null'"
@@ -188,11 +188,12 @@ services:
       KAFKA_REST_BOOTSTRAP_SERVERS: 'broker:29092'
       KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
       KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
+
 volumes:
   kafka_data:
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: c:\hski\testVolume
+      device: ${DATA_DIRECTORY}
 
