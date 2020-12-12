@@ -36,3 +36,8 @@ openssl x509 -req -CA ca-cert -CAkey ca-key -in ./client-cert-file -out ./client
 echo "import CA and client certificate to client keystore"
 keytool -keystore kafka.client.keystore.jks -alias CARoot -import -file ./ca-cert -storepass $CLIPASS -keypass $CLIPASS -noprompt
 keytool -keystore kafka.client.keystore.jks -import -file client-cert-signed -alias kafkaClient -storepass $CLIPASS -keypass $CLIPASS -noprompt
+
+
+echo $SRVPASS > broker_ssl_creds
+echo $SRVPASS > broker_keystore_creds
+echo $SRVPASS > broker_truststore_creds
