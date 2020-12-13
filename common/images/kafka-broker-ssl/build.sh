@@ -1,0 +1,1 @@
+docker build -t gft-bigdata/kafka-broker-ssl .

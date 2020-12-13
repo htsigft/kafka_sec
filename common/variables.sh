@@ -2,6 +2,3 @@ export DATA_DIRECTORY="$PWD/data"
 export SCHEMA_REGISTRY_TIMEOUT_SECS=90
 export BROKER_TIMEOUT_SECS=90
 export ZOOKEEPER_TIMEOUT_SECS=90
-pwd
-
-ssl\\gen_certs.sh

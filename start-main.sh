@@ -1,3 +1,15 @@
 source common/variables.sh
 
+source common/docker-clear-containers.sh
+
+cd common/images/kafka-broker-ssl
+
+source build.sh
+
+cd ../kafka-client-ssl
+
+source build.sh
+
+cd ../../../
+
 docker-compose -f docker-compose.yml up
