@@ -36,3 +36,5 @@ ls -al
 echo $SRVPASS > broker_ssl_creds
 echo $SRVPASS > broker_keystore_creds
 echo $SRVPASS > broker_truststore_creds
+
+source /etc/confluent/docker/run

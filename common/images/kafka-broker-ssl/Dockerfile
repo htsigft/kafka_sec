@@ -2,12 +2,10 @@ FROM confluentinc/cp-server:6.0.0
 
 USER root
 
-COPY gen_server_certs.sh /etc/scripts/gen_certs.sh
+COPY start_with_server_certs.sh /etc/scripts/start.sh
 
 RUN mkdir "/etc/kafka/secrets/ssl"
 
-RUN chmod 777 /etc/scripts/gen_certs.sh
+RUN chmod 777 /etc/scripts/start.sh
 
-RUN /etc/scripts/gen_certs.sh
-
-CMD ["/etc/confluent/docker/run"]
+CMD ["/etc/scripts/start.sh"]
