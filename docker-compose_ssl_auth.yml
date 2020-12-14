@@ -48,6 +48,7 @@ services:
       KAFKA_SSL_KEYSTORE_CREDENTIALS: 'ssl/broker_keystore_creds'
       KAFKA_SSL_TRUSTSTORE_FILENAME: 'ssl/kafka.server.truststore.jks'
       KAFKA_SSL_TRUSTSTORE_CREDENTIALS: 'ssl/broker_truststore_creds'
+      KAFKA_SSL_CLIENT_AUTH: 'required'
     volumes:
       - kafka_data:/etc/kafka/secrets
   schema-registry:

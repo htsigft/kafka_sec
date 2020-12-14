@@ -12,8 +12,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   broker:
-    #build: common/images/kafka-broker-ssl
-    image: gft-bigdata/kafka-broker-ssl #confluentinc/cp-server:6.0.0
+    image: confluentinc/cp-server:6.0.0
     hostname: broker
     container_name: broker
     depends_on:
@@ -25,9 +24,8 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      #KAFKA_LISTENERS: SSL://broker:29093
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: SSL:SSL,SSL_HOST:SSL,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: SSL://:29093,SSL_HOST://:9093,PLAINTEXT://:29092,PLAINTEXT_HOST://:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,SSL:SSL,SSL_HOST:SSL
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092,SSL://broker:29093,SSL_HOST://localhost:9093
       KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
@@ -42,12 +40,11 @@ services:
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
       CONFLUENT_METRICS_ENABLE: 'true'
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
-      ALLOW_PLAINTEXT_LISTENER: 'no'
-      KAFKA_SSL_KEYSTORE_FILENAME: 'ssl/kafka.server.keystore.jks'
-      KAFKA_SSL_KEY_CREDENTIALS: 'ssl/broker_ssl_creds'
-      KAFKA_SSL_KEYSTORE_CREDENTIALS: 'ssl/broker_keystore_creds'
-      KAFKA_SSL_TRUSTSTORE_FILENAME: 'ssl/kafka.server.truststore.jks'
-      KAFKA_SSL_TRUSTSTORE_CREDENTIALS: 'ssl/broker_truststore_creds'
+      KAFKA_SSL_KEYSTORE_FILENAME: '/ssl/kafka.server.keystore.jks'
+      KAFKA_SSL_KEY_CREDENTIALS: '/ssl/broker_ssl_creds'
+      KAFKA_SSL_KEYSTORE_CREDENTIALS: '/ssl/broker_keystore_creds'
+      KAFKA_SSL_TRUSTORE_CREDENTIALS: '/ssl/broker_trustore_creds'
+      SSL_CLIENT_AUTH: 'required'
     volumes:
       - kafka_data:/etc/kafka/secrets
   schema-registry:
@@ -62,17 +59,6 @@ services:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker:29092'
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
-
-  client:
-    #build: common/images/kafka-broker-ssl
-    image: gft-bigdata/kafka-client-ssl #confluentinc/cp-server:6.0.0
-    hostname: client
-    container_name: client
-    depends_on:
-      - zookeeper
-      - broker
-    volumes:
-      - kafka_data:/etc/kafka/secrets
 
   connect:
     image: cnfldemos/cp-server-connect-datagen:0.4.0-6.0.0
@@ -173,10 +159,10 @@ services:
       - schema-registry
       - connect
     command: "bash -c 'echo Waiting for Kafka to be ready... && \
-                       cub kafka-ready -b broker:29092 1 $BROKER_TIMEOUT_SECS && \
+                       cub kafka-ready -b broker:29092 1 40 && \
                        echo Waiting for Confluent Schema Registry to be ready... && \
                        A
-                       cub sr-ready schema-registry 8081 $SCHEMA_REGISTRY_TIMEOUT_SECS && \
+                       cub sr-ready schema-registry 8081 40 && \
                        echo Waiting a few seconds for topic creation to finish... && \
                        sleep 111 && \
                        tail -f /dev/null'"
@@ -200,12 +186,11 @@ services:
       KAFKA_REST_BOOTSTRAP_SERVERS: 'broker:29092'
       KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
       KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
-
 volumes:
   kafka_data:
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: ${DATA_DIRECTORY}
+      device: c:\hski\testVolume
 
