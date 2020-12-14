@@ -4,8 +4,6 @@ USER root
 
 COPY start_with_server_certs.sh /etc/scripts/start.sh
 
-RUN mkdir "/etc/kafka/secrets/ssl"
-
 RUN chmod 777 /etc/scripts/start.sh
 
 CMD ["/etc/scripts/start.sh"]

@@ -2,14 +2,23 @@
 export SRVPASS=password
 export CLIPASS=password
 
+echo "ls /etc"
+ls /etc
+
+echo "ls /etc/kafka"
+ls /etc/kafka
+
+echo "ls /etc/kafka/secrets"
+ls /etc/kafka/secrets
+
 echo "create directory: /etc/kafka/secrets/ssl"
-mkdir "/etc/kafka/secrets/ssl"
+mkdir -p "/etc/kafka/secrets/ssl"
 
 echo "move to directory: /etc/kafka/secrets/ssl"
 cd /etc/kafka/secrets/ssl
 
 echo "generate broker keystore: "
-keytool -genkeypair -keystore kafka.server.keystore.jks -alias broker -keyalg RSA -validity 365 -storepass $SRVPASS -keypass $SRVPASS -storetype pkcs12 -dname "CN=broker"
+keytool -genkey -keystore kafka.server.keystore.jks -alias broker -keyalg RSA -validity 365 -storepass $SRVPASS -keypass $SRVPASS -storetype pkcs12 -dname "CN=broker"
 
 echo "creating CA"
 openssl req -new -newkey rsa:4096 -days 365 -x509 -subj "/CN=Kafka-CA" -keyout ca-key -out ca-cert -nodes
