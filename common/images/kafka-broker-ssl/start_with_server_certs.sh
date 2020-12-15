@@ -2,15 +2,6 @@
 export SRVPASS=password
 export CLIPASS=password
 
-echo "ls /etc"
-ls /etc
-
-echo "ls /etc/kafka"
-ls /etc/kafka
-
-echo "ls /etc/kafka/secrets"
-ls /etc/kafka/secrets
-
 echo "create directory: /etc/kafka/secrets/ssl"
 mkdir -p "/etc/kafka/secrets/ssl"
 

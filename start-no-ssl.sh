@@ -1,23 +1,23 @@
-CALL common/variables.bat
+source common/variables.sh
 
-CALL common/docker-clear-containers.bat
+source common/docker-clear-containers.sh
 
 docker image rm gft-bigdata/kafka-broker-ssl
 
 docker image rm gft-bigdata/kafka-client-ssl
 
-rm /S "data"
+rm -r data
 
-mkdir "data"
+mkdir data
 
 cd common/images/kafka-broker-ssl
 
-CALL build.bat
+source build.sh
 
 cd ../kafka-client-ssl
 
-CALL build.bat
+source build.sh
 
 cd ../../../
 
-docker-compose -f docker-compose-ssl-auth.yml up
+docker-compose -f docker-compose-no-ssl.yml up

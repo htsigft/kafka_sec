@@ -20,4 +20,4 @@ CALL build.bat
 
 cd ../../../
 
-docker-compose -f docker-compose-ssl-auth.yml up
+docker-compose -f docker-compose-no-ssl.yml up

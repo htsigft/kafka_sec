@@ -16,7 +16,7 @@ keytool -keystore kafka.client.keystore.jks -alias client -certreq -file client-
 
 echo "create client truststore and add CA certyficate"
 keytool -keystore kafka.client.truststore.jks -alias CARoot -importcert -file ca-cert -storepass $CLIPASS -keypass $CLIPASS -noprompt
-
+sleep 1
 echo "sign client certificate by CA"
 openssl x509 -req -CA ca-cert -CAkey ca-key -in client-cert-file -out client-cert-signed -days 365 -CAserial ca-cert.srl -passin pass:$CLIPASS
 sleep 1

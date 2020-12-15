@@ -19,14 +19,12 @@ services:
       - zookeeper
     ports:
       - "9092:9092"
-      - "9093:9093"
       - "9101:9101"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      KAFKA_LISTENERS: SSL://broker:29093
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: SSL:SSL,SSL_HOST:SSL
-      KAFKA_ADVERTISED_LISTENERS: SSL://:29093,SSL_HOST://:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
@@ -41,14 +39,9 @@ services:
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
       CONFLUENT_METRICS_ENABLE: 'true'
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
-      ALLOW_PLAINTEXT_LISTENER: 'no'
-      KAFKA_SSL_KEYSTORE_FILENAME: '/ssl/kafka.server.keystore.jks'
-      KAFKA_SSL_KEY_CREDENTIALS: '/ssl/broker_ssl_creds'
-      KAFKA_SSL_KEYSTORE_CREDENTIALS: '/ssl/broker_keystore_creds'
-      KAFKA_SSL_TRUSTSTORE_FILENAME: '/ssl/kafka.server.truststore.jks'
-      KAFKA_SSL_TRUSTORE_CREDENTIALS: '/ssl/broker_trustore_creds'
+      HS_TEST: 'sample_properties'
     volumes:
-      - kafka_data:/etc/kafka/secrets
+      - kafka_data:/var/lib/docker/_data
   schema-registry:
     image: confluentinc/cp-schema-registry:6.0.0
     hostname: schema-registry
@@ -163,10 +156,9 @@ services:
     command: "bash -c 'echo Waiting for Kafka to be ready... && \
                        cub kafka-ready -b broker:29092 1 40 && \
                        echo Waiting for Confluent Schema Registry to be ready... && \
-                       A
                        cub sr-ready schema-registry 8081 40 && \
                        echo Waiting a few seconds for topic creation to finish... && \
-                       sleep 111 && \
+                       sleep 11 && \
                        tail -f /dev/null'"
     environment:
       KSQL_CONFIG_DIR: "/etc/ksql"

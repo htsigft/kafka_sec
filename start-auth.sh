@@ -20,4 +20,4 @@ source build.sh
 
 cd ../../../
 
-docker-compose -f docker-compose_ssl_auth.yml up
+docker-compose -f docker-compose-ssl-auth.yml up
