@@ -24,4 +24,12 @@ echo "import CA and client certificate to client keystore"
 keytool -keystore kafka.client.keystore.jks -alias CARoot -import -file ca-cert -storepass $CLIPASS -keypass $CLIPASS -noprompt
 keytool -keystore kafka.client.keystore.jks -alias client -import -file client-cert-signed  -storepass $CLIPASS -keypass $CLIPASS
 
+
+echo "ssl.truststore.location=/etc/kafka/secrets/ssl/kafka.client.truststore.jks" > client.ssl.config
+echo "ssl.truststore.password="$CLIPASS >> client.ssl.config
+echo "ssl.keystore.location=/etc/kafka/secrets/ssl/kafka.client.keystore.jks" >> client.ssl.config
+echo "ssl.keystore.password="$CLIPASS >> client.ssl.config
+echo "ssl.key.password="$CLIPASS >> client.ssl.config
+echo "security.protocol=SSL" >> client.ssl.config
+
 sleep "infinity"

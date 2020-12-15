@@ -42,7 +42,6 @@ services:
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
       CONFLUENT_METRICS_ENABLE: 'true'
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
-      ALLOW_PLAINTEXT_LISTENER: 'no'
       KAFKA_SSL_KEYSTORE_FILENAME: 'ssl/kafka.server.keystore.jks'
       KAFKA_SSL_KEY_CREDENTIALS: 'ssl/broker_ssl_creds'
       KAFKA_SSL_KEYSTORE_CREDENTIALS: 'ssl/broker_keystore_creds'
