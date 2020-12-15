@@ -19,6 +19,12 @@ echo "==========================================================================
 tee /etc/krb5.conf <<EOF
 [libdefaults]
 	default_realm = $REALM
+	dns_lookup_realm = false
+	dns_lookup_kdc = false
+	ticket_lifetime = 24h
+	renew_lifetime = 7d
+	forwardable = true
+
 [realms]
 	$REALM = {
 		kdc = kdc-kadmin
@@ -26,6 +32,8 @@ tee /etc/krb5.conf <<EOF
 	}
 EOF
 echo ""
+
+cp /etc/krb5.conf /etc/security/keytabs/krb5.conf
 
 echo "==================================================================================="
 echo "==== Testing ======================================================================"

@@ -208,4 +208,3 @@ volumes:
       o: bind
       type: none
       device: ${DATA_DIRECTORY}
-

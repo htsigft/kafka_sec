@@ -1,6 +1,8 @@
 FROM debian:jessie
 MAINTAINER Simão Martins "simao.martins@tecnico.ulisboa.pt"
 
+USER root
+
 ENV DEBIAN_FRONTEND noninteractive
 # The -qq implies --yes
 RUN apt-get -qq update
@@ -15,4 +17,7 @@ ENV KADMIN_PRINCIPAL ${KADMIN_PRINCIPAL:-kadmin/admin}
 ENV KADMIN_PASSWORD ${KADMIN_PASSWORD:-MITiys4K5}
 
 COPY init-script.sh configureKerberosClient.sh /tmp/
+
+RUN chmod 777 /tmp/init-script.sh
+
 CMD /tmp/init-script.sh
