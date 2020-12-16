@@ -10,14 +10,8 @@ rm /S "data"
 
 mkdir "data"
 
-cd common/images/kafka-broker-ssl
+CALL common/build-container.sh kafka-broker-ssl
 
-CALL build.bat
-
-cd ../kafka-client-ssl
-
-CALL build.bat
-
-cd ../../../
+CALL common/build-container.sh kafka-client-ssl
 
 docker-compose -f docker-compose.yml up
