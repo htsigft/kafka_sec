@@ -20,4 +20,4 @@ source build.sh
 
 cd ../../../
 
-docker-compose -f docker-compose-ssl-anc.yml up
+docker-compose -f docker-compose-ssl-enc.yml up
