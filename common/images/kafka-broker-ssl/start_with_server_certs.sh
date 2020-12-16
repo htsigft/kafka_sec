@@ -2,15 +2,6 @@
 export SRVPASS=password
 export CLIPASS=password
 
-echo "ls /etc"
-ls /etc
-
-echo "ls /etc/kafka"
-ls /etc/kafka
-
-echo "ls /etc/kafka/secrets"
-ls /etc/kafka/secrets
-
 echo "create directory: /etc/kafka/secrets/ssl"
 mkdir -p "/etc/kafka/secrets/ssl"
 
@@ -45,5 +36,13 @@ ls -al
 echo $SRVPASS > broker_ssl_creds
 echo $SRVPASS > broker_keystore_creds
 echo $SRVPASS > broker_truststore_creds
+
+
+echo "ssl.truststore.location=/etc/kafka/secrets/ssl/kafka.server.truststore.jks" > server.ssl.config
+echo "ssl.truststore.password="$SRVPASS >> server.ssl.config
+echo "ssl.keystore.location=/etc/kafka/secrets/ssl/kafka.server.keystore.jks" >> server.ssl.config
+echo "ssl.keystore.password="$SRVPASS >> server.ssl.config
+echo "ssl.key.password="$SRVPASS >> server.ssl.config
+echo "security.protocol=SSL" >> server.ssl.config
 
 source /etc/confluent/docker/run
